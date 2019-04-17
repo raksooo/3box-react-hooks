@@ -4,17 +4,17 @@ import { useEffectIf, useCallbackIf } from './helperHooks';
 import { useProvider, useAddress } from './ethereumHooks';
 
 export const useProfile = () => {
-	const address = useAddress();
-	const [profile, setProfile] = useState(null);
+  const address = useAddress();
+  const [profile, setProfile] = useState(null);
 
   const condition = address != null;
-	useEffectIf(() => {
+  useEffectIf(() => {
     Box
       .getProfile(address)
       .then(setProfile);
-	}, [address], condition);
+  }, [address], condition);
 
-	return profile;
+  return profile;
 };
 
 export const useBox = () => {
@@ -29,11 +29,11 @@ export const useDelayedBox = () => {
   const [box, setBox] = useState(null);
 
   const condition = address != null && box == null;
-	const openBox = useCallbackIf(() => {
+  const openBox = useCallbackIf(() => {
     Box
       .openBox(address, provider)
       .then(setBox);
-	}, [provider, address, box], condition);
+  }, [provider, address, box], condition);
 
   return [box, openBox];
 };
@@ -45,11 +45,11 @@ export const useSpace = (spaceName) => {
 }
 
 export const useDelayedSpace = (spaceName) => {
-	const [box, openBox] = useDelayedBox();
-	const [space, setSpace] = useState(null);
-	
+  const [box, openBox] = useDelayedBox();
+  const [space, setSpace] = useState(null);
+
   const condition = box == null && space == null;
-	const openSpace = useCallbackIf(openBox, [box, openBox, space], condition);
+  const openSpace = useCallbackIf(openBox, [box, openBox, space], condition);
 
   const effectCondition = box != null && space == null;
   useEffectIf(() => {
@@ -58,6 +58,6 @@ export const useDelayedSpace = (spaceName) => {
       .then(setSpace);
   }, [box, space, spaceName], effectCondition);
 
-	return [space, openSpace];
+  return [space, openSpace];
 };
 
