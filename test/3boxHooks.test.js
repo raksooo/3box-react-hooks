@@ -34,6 +34,6 @@ describe('Ethereum specific hooks', function() {
 
     const profilePromise = asyncHookPromise(Component);
     return expect(profilePromise).to.eventually.not.be.null;
-  });
+  }).timeout(5000);
 });
 
