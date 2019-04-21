@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useAsyncEffect } from './helperHooks';
 
 const getProvider = () => {
   if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
@@ -12,17 +13,16 @@ const getProvider = () => {
   return null;
 };
 
-const getAddressFromProvider = provider => {
+const getAddressFromProvider = async (provider) => {
   if (provider == null) {
-    return Promise.resolve(null);
+    return null;
   }
 
   if (typeof provider.enable == 'function') {
-    return provider
-      .enable()
-      .then(addresses => addresses[0]);
+    const addresses = await provider.enable()
+    return addresses[0];
   } else {
-    return Promise.resolve(provider.address);
+    return provider.address;
   }
 }
 
@@ -32,13 +32,11 @@ export const useAddress = () => {
   const provider = useProvider();
   const [address, setAddress] = useState(null);
 
-  useEffect(() => {
-    getAddressFromProvider(provider)
-      .then(address => {
-        if (address != null) {
-          setAddress(address);
-        }
-      });
+  useAsyncEffect(async () => {
+    const address = await getAddressFromProvider(provider);
+    if (address != null) {
+      setAddress(address);
+    }
   }, [provider]);
 
   return address;

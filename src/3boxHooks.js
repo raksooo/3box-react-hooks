@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Box from '3box';
-import { useEffectIf, useCallbackIf } from './helperHooks';
+import { useEffectIf, useCallbackIf, useAsyncEffectIf } from './helperHooks';
 import { useProvider, useAddress } from './ethereumHooks';
 
 export const useProfile = () => {
@@ -8,10 +8,9 @@ export const useProfile = () => {
   const [profile, setProfile] = useState(null);
 
   const condition = address != null;
-  useEffectIf(() => {
-    Box
-      .getProfile(address)
-      .then(setProfile);
+  useAsyncEffectIf(async () => {
+    const profile = await Box.getProfile(address);
+    setProfile(profile);
   }, [address], condition);
 
   return profile;
@@ -29,10 +28,9 @@ export const useDelayedBox = () => {
   const [box, setBox] = useState(null);
 
   const condition = address != null && box == null;
-  const openBox = useCallbackIf(() => {
-    Box
-      .openBox(address, provider)
-      .then(setBox);
+  const openBox = useCallbackIf(async () => {
+    const box = await Box.openBox(address, provider);
+    setBox(box);
   }, [provider, address, box], condition);
 
   return [box, openBox];
@@ -52,10 +50,9 @@ export const useDelayedSpace = (spaceName) => {
   const openSpace = useCallbackIf(openBox, [box, openBox, space], condition);
 
   const effectCondition = box != null && space == null;
-  useEffectIf(() => {
-    box
-      .openSpace(spaceName)
-      .then(setSpace);
+  useAsyncEffectIf(async () => {
+    const space = await box.openSpace(spaceName)
+    setSpace(space);
   }, [box, space, spaceName], effectCondition);
 
   return [space, openSpace];
