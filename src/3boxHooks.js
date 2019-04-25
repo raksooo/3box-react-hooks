@@ -37,9 +37,9 @@ export const useDelayedBox = () => {
 };
 
 export const useSpace = (spaceName) => {
-  const [space, openSpace] = useDelayedSpace(spaceName);
+  const [space, openSpace, box] = useDelayedSpace(spaceName);
   useEffect(() => { openSpace() });
-  return space;
+  return [space, box];
 }
 
 export const useDelayedSpace = (spaceName) => {
@@ -55,6 +55,6 @@ export const useDelayedSpace = (spaceName) => {
     setSpace(space);
   }, [box, space, spaceName], effectCondition);
 
-  return [space, openSpace];
+  return [space, openSpace, box];
 };
 

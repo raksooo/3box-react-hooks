@@ -13,7 +13,7 @@ import { useProfile, useBox, useSpace } from '3box-react-hooks';
 const MyComponent = (props) => {
   const profile = useProfile();
   const box = useBox();
-  const space = useSpace('exampleSpace');
+  const [space, _] = useSpace('exampleSpace');
 
   const email = await box.private.get('email');
   const spaceValue = await box.private.get('key');
@@ -36,7 +36,7 @@ import { useDelayedBox, useDelayedSpace } from '3box-react-hooks';
 
 const MyComponent = (props) => {
   const [box, openBox] = useDelayedBox();
-  const [space, openSpace] = useDelayedSpace('exampleSpace');
+  const [space, openSpace, _] = useDelayedSpace('exampleSpace');
   const [opened, setOpened] = useState(false);
   const open = useCallback(() => {
     if (!opened) {
