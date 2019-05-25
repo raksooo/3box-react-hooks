@@ -20,7 +20,6 @@ module.exports = {
     ]
   },
   externals: {
-    react: 'react',
-    '3box': '3box',
+    react: 'react'
   },
 }
