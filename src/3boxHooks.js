@@ -25,12 +25,13 @@ export const useDelayedBox = (...boxArgs) => {
 };
 
 export const useDelayedSpace = (spaceName, ...boxArgs) => {
-  const [[space, box], openSpace] = useAsyncCallback(async () => {
+  const [result, openSpace] = useAsyncCallback(async () => {
     const box = await openBox(...boxArgs);
     const space = await box.openSpace(spaceName);
     return [space, box];
-  }, [spaceName, ...boxArgs], []);
+  }, [spaceName, ...boxArgs]);
 
+  const [space, box] = result != null ? result : [null, null];
   return [space, box, openSpace];
 };
 

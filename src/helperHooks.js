@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-export const useAsync = (fn, dependencies, defaultValue = null) => {
+export const useAsync = (fn, dependencies) => {
   const mounted = useMounted();
-  const [result, setResult] = useState(defaultValue);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -16,9 +16,9 @@ export const useAsync = (fn, dependencies, defaultValue = null) => {
   return result;
 };
 
-export const useAsyncCallback = (callback, dependencies, defaultValue = null) => {
+export const useAsyncCallback = (callback, dependencies) => {
   const mounted = useMounted();
-  const [result, setResult] = useState(defaultValue);
+  const [result, setResult] = useState(null);
 
   const _callback = useCallback(async () => {
     const result = await callback();
