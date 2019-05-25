@@ -25,10 +25,14 @@ describe('Ethereum specific hooks', function() {
     address: '0x88E146E0fd0F5AaCbc4f94365dF9f599A90139F1',
     name: 'Oskar',
   };
+  const TEST_SPACE = '3box-react-hooks-test-space';
 
   const provider = new FakeProvider();
   const result = "0x565dbf28ff166f3118182044c3f9cf8558d170bee98e7887d21d40027be6ee457debd818805e0ca33665bbc375e0f06d48ada99308fcde24f320aac2e82b5dbc1c";
-  provider.injectResult(result);
+
+  beforeEach(function() {
+    provider.injectResult(result);
+  });
 
   it('should retrieve a profile', function() {
     const Component = ({ resolve }) => {
@@ -60,6 +64,21 @@ describe('Ethereum specific hooks', function() {
       expect(promise).to.eventually.have.property('public'),
       expect(promise).to.eventually.have.property('spaces'),
     ]);
+  });
+
+  it('should retrieve a space', function() {
+    const Component = ({ resolve }) => {
+      const [space] = useSpace(TEST_SPACE, TEST_PROFILE.address, provider);
+      space != null && resolve(space);
+      return null;
+    }
+    const promise = asyncHookPromise(Component);
+
+    return promise.then(space => {
+      expect(space).to.not.be.null;
+      expect(space).to.have.property('private');
+      expect(space).to.have.property('public');
+    });
   });
 });
 
