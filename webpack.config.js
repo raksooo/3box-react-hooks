@@ -1,25 +1,26 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: './src/index.js',
+  output: {
+    library: '3box-react-hooks',
+    libraryTarget: 'umd',
+    filename: 'index.js'
+  },
   module: {
     rules: [
       {
-        test: /\.(js|js)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader']
+        test: /\.(js)$/,
+        exclude: /(node_modules)/,
+        resolve: {
+          extensions: ['.js']
+        },
+        use: 'babel-loader',
       }
     ]
   },
   externals: {
     react: 'react',
-  },
-  resolve: {
-    extensions: ['*', '.js']
-  },
-  output: {
-    library: "3box-react-hooks",
-    libraryTarget: "umd",
-    filename: "index.js"
+    '3box': '3box',
   },
 }
