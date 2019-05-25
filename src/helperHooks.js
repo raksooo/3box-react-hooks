@@ -1,32 +1,43 @@
-import { useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
-export const useEffectIf = (effect, dependencies = [], condition) => {
-  return useEffect(() => {
-    if (condition === true) {
-      effect();
-    }
-  }, dependencies.concat([condition]));
-};
+export const useAsync = (fn, dependencies, defaultValue = null) => {
+  const mounted = useMounted();
+  const [result, setResult] = useState(defaultValue);
 
-export const useCallbackIf = (callback, dependencies = [], condition) => {
-  return useCallback(() => {
-    if (condition === true) {
-      callback();
-    }
-  }, dependencies.concat([condition]));
-};
-
-export const useAsyncEffect = (effect, dependencies) => {
-  return useEffect(() => {
-    effect();
+  useEffect(() => {
+    (async () => {
+      const result = await fn();
+      if (mounted.current) {
+        setResult(result);
+      }
+    })();
   }, dependencies);
+
+  return result;
 };
 
-export const useAsyncEffectIf = (effect, dependencies = [], condition) => {
-  return useAsyncEffect(async () => {
-    if (condition === true) {
-      effect();
+export const useAsyncCallback = (callback, dependencies, defaultValue = null) => {
+  const mounted = useMounted();
+  const [result, setResult] = useState(defaultValue);
+
+  const _callback = useCallback(async () => {
+    const result = await callback();
+    if (mounted.current) {
+      setResult(result);
     }
-  }, dependencies.concat([condition]));
+  }, dependencies);
+
+  return [result, _callback];
+};
+
+export const useMounted = () => {
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => mounted.current = false;
+  }, []);
+
+  return mounted;
 };
 

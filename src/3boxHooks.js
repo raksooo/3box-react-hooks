@@ -1,60 +1,40 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 import Box from '3box';
-import { useEffectIf, useCallbackIf, useAsyncEffectIf } from './helperHooks';
-import { useProvider, useAddress } from './ethereumHooks';
+import { useAsyncCallback, useAsync } from './helperHooks';
 
-export const useProfile = () => {
-  const address = useAddress();
-  const [profile, setProfile] = useState(null);
-
-  const condition = address != null;
-  useAsyncEffectIf(async () => {
-    const profile = await Box.getProfile(address);
-    setProfile(profile);
-  }, [address], condition);
-
-  return profile;
+export const useProfile = (address) => {
+  return useAsync(async () => await Box.getProfile(address), [address]);
 };
 
-export const useBox = () => {
-  const [box, openBox] = useDelayedBox();
-  useEffect(() => { openBox() });
+export const useBox = (...args) => {
+  const [box, open] = useDelayedBox(...args);
+  useEffect(() => { open(); }, []);
   return box;
 }
 
-export const useDelayedBox = () => {
-  const provider = useProvider();
-  const address = useAddress();
-  const [box, setBox] = useState(null);
-
-  const condition = address != null && box == null;
-  const openBox = useCallbackIf(async () => {
-    const box = await Box.openBox(address, provider);
-    setBox(box);
-  }, [provider, address, box], condition);
-
-  return [box, openBox];
-};
-
-export const useSpace = (spaceName) => {
-  const [space, openSpace, box] = useDelayedSpace(spaceName);
-  useEffect(() => { openSpace() });
+export const useSpace = (spaceName, ...boxArgs) => {
+  const [space, box, open] = useDelayedSpace(spaceName, ...boxArgs);
+  useEffect(() => { open(); }, []);
   return [space, box];
 }
 
-export const useDelayedSpace = (spaceName) => {
-  const [box, openBox] = useDelayedBox();
-  const [space, setSpace] = useState(null);
+export const useDelayedBox = (...boxArgs) => {
+  return useAsyncCallback(async () => {
+    return await openBox(...boxArgs)
+  }, [...boxArgs]);
+};
 
-  const condition = box == null && space == null;
-  const openSpace = useCallbackIf(openBox, [box, openBox, space], condition);
+export const useDelayedSpace = (spaceName, ...boxArgs) => {
+  const [[space, box], openSpace] = useAsyncCallback(async () => {
+    const box = await openBox(...boxArgs);
+    const space = await box.openSpace(spaceName);
+    return [space, box];
+  }, [spaceName, ...boxArgs], []);
 
-  const effectCondition = box != null && space == null;
-  useAsyncEffectIf(async () => {
-    const space = await box.openSpace(spaceName)
-    setSpace(space);
-  }, [box, space, spaceName], effectCondition);
+  return [space, box, openSpace];
+};
 
-  return [space, openSpace, box];
+const openBox = async (address, provider) => {
+  return await Box.openBox(address, provider);
 };
 
