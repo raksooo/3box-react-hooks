@@ -13,10 +13,8 @@ import {
 import { asyncHookPromise } from './testHelper';
 import 'jsdom-global/register';
 import Adapter from 'enzyme-adapter-react-16';
-import ChaiAsPromised from 'chai-as-promised';
 
 configure({ adapter: new Adapter() });
-chai.use(ChaiAsPromised);
 
 describe('Ethereum specific hooks', function() {
   this.timeout(5000);
@@ -28,10 +26,9 @@ describe('Ethereum specific hooks', function() {
   const TEST_SPACE = '3box-react-hooks-test-space';
 
   const provider = new FakeProvider();
-  const result = "0x565dbf28ff166f3118182044c3f9cf8558d170bee98e7887d21d40027be6ee457debd818805e0ca33665bbc375e0f06d48ada99308fcde24f320aac2e82b5dbc1c";
 
   beforeEach(function() {
-    provider.injectResult(result);
+    provider.injectResult('0x0');
   });
 
   it('should retrieve a profile', function() {
@@ -42,11 +39,10 @@ describe('Ethereum specific hooks', function() {
     }
     const promise = asyncHookPromise(Component);
 
-    return Promise.all([
-      expect(promise).to.eventually.be.fulfilled,
-      expect(promise).to.eventually.not.be.null,
-      expect(promise).to.eventually.have.property('name', TEST_PROFILE.name),
-    ]);
+    return promise.then(profile => {
+      expect(profile).to.not.be.null;
+      expect(profile).to.have.property('name', TEST_PROFILE.name);
+    });
   });
 
   it('should retrieve a box', function() {
@@ -57,13 +53,12 @@ describe('Ethereum specific hooks', function() {
     }
     const promise = asyncHookPromise(Component);
 
-    return Promise.all([
-      expect(promise).to.eventually.be.fulfilled,
-      expect(promise).to.eventually.not.be.null,
-      expect(promise).to.eventually.have.property('private'),
-      expect(promise).to.eventually.have.property('public'),
-      expect(promise).to.eventually.have.property('spaces'),
-    ]);
+    return promise.then(box => {
+      expect(box).to.not.be.null;
+      expect(box).to.have.property('private');
+      expect(box).to.have.property('public');
+      expect(box).to.have.property('spaces');
+    });
   });
 
   it('should retrieve a space', function() {
