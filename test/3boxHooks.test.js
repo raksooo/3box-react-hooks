@@ -5,8 +5,7 @@ import {
   useProfile,
   useBox,
   useSpace,
-  useDelayedBox,
-  useDelayedSpace
+  usePublicSpace,
 } from '../src/3boxHooks.js';
 import { testHook, testHookN } from './testHelper';
 import 'jsdom-global/register';
@@ -52,6 +51,12 @@ describe('Ethereum specific hooks', function() {
     expect(space).to.have.property('private');
     expect(space).to.have.property('public');
     expect(space).to.have.property('_name', TEST_SPACE);
+  });
+
+  it('should retrieve a public space', async function() {
+    const space = await testHook(usePublicSpace, TEST_SPACE, TEST_PROFILE.address);
+
+    expect(space).to.not.be.null;
   });
 });
 

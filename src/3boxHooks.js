@@ -6,6 +6,10 @@ export const useProfile = (address) => {
   return useAsync(async () => await Box.getProfile(address), [address]);
 };
 
+export const usePublicSpace = (spaceName, address) => {
+  return useAsync(async () => await Box.getSpace(spaceName, address));
+};
+
 export const useBox = (...args) => {
   const [box, open] = useDelayedBox(...args);
   useEffect(() => { open(); }, []);
