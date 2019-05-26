@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Box from '3box';
 import { useProfile, usePublicSpace } from './api';
-import { useAsyncCallback, useAsync } from './helperHooks';
+import { useAsyncCallback } from './helperHooks';
 
 export { useProfile, usePublicSpace };
 

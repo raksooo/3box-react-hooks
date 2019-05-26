@@ -1,18 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 export const useAsync = (fn, dependencies) => {
-  const mounted = useMounted();
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const result = await fn();
-      if (mounted.current) {
-        setResult(result);
-      }
-    })();
-  }, dependencies);
-
+  const [result, callback] = useAsyncCallback(fn, dependencies);
+  useEffect(() => { callback(); }, []);
   return result;
 };
 
