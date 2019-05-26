@@ -1,24 +1,36 @@
 import React, { useCallback } from 'react';
 import ReactDOM from 'react-dom';
-import { useProfile, useBox, useSpace, useDelayedBox, useDelayedSpace } from '../dist/';
+import { useProfile, useBox, useSpace, useDelayedBox, useDelayedSpace, usePublicSpace } from '../dist/';
+import { useProfile as useApiProfile, usePublicSpace as useApiPublicSpace } from '../dist/api.js';
 import getProvider from 'eth-provider';
 
 const SPACE_NAME = '3box-react-hooks-demo';
 
 const Example = ({ provider, address }) => {
-  const profile = useProfile(address);
+  const profile1 = useProfile(address);
   const box1 = useBox(address, provider);
   const [space1] = useSpace(SPACE_NAME, address, provider);
   const [box2, openBox2] = useDelayedBox(address, provider);
   const [space2,, openSpace2] = useDelayedSpace(SPACE_NAME, address, provider);
+  const space3 = usePublicSpace(address, SPACE_NAME);
+  const profile2 = useApiProfile(address);
+  const space4 = useApiPublicSpace(address, SPACE_NAME);
 
   const open = useCallback(() => {
     openBox2();
     openSpace2();
   }, [openBox2, openSpace2])
 
-  const data = Object.entries({ profile, box1, space1, box2, space2, })
-    .map(([key, value], i) => {
+  const data = Object.entries({
+    profile1,
+    box1,
+    space1,
+    box2,
+    space2,
+    space3,
+    profile2,
+    space4,
+  }).map(([key, value], i) => {
       const text = Object.entries(value || {})
         .map(([key, value]) => `${key}:${value}`)
         .join('\n');
