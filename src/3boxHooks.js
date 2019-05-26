@@ -1,14 +1,9 @@
 import { useEffect } from 'react';
 import Box from '3box';
+import { useProfile, usePublicSpace } from './api';
 import { useAsyncCallback, useAsync } from './helperHooks';
 
-export const useProfile = (address) => {
-  return useAsync(() => Box.getProfile(address), [address]);
-};
-
-export const usePublicSpace = (address, spaceName) => {
-  return useAsync(() => Box.getSpace(address, spaceName), [address, spaceName]);
-};
+export { useProfile, usePublicSpace };
 
 export const useBox = (...args) => {
   const [box, open] = useDelayedBox(...args);
