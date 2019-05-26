@@ -8,10 +8,17 @@ export const testHook = (hook, ...args) => {
 export const testHookN = (hook, n, ...args) => {
   const Component = ({ resolve }) => {
     let result = hook(...args);
-    result = n == null ? result : result[n];
-    result != null && resolve(result);
+    if (n != null) {
+      result = result[n];
+    }
+
+    if (result != null) {
+      resolve(result);
+    }
+
     return null;
   }
+
   return asyncHookPromise(Component);
 };
 

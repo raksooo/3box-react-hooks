@@ -3,11 +3,11 @@ import Box from '3box';
 import { useAsyncCallback, useAsync } from './helperHooks';
 
 export const useProfile = (address) => {
-  return useAsync(async () => await Box.getProfile(address), [address]);
+  return useAsync(() => Box.getProfile(address), [address]);
 };
 
 export const usePublicSpace = (address, spaceName) => {
-  return useAsync(async () => await Box.getSpace(address, spaceName), [address, spaceName]);
+  return useAsync(() => Box.getSpace(address, spaceName), [address, spaceName]);
 };
 
 export const useBox = (...args) => {
@@ -23,9 +23,7 @@ export const useSpace = (spaceName, ...boxArgs) => {
 }
 
 export const useDelayedBox = (...boxArgs) => {
-  return useAsyncCallback(async () => {
-    return await openBox(...boxArgs)
-  }, [...boxArgs]);
+  return useAsyncCallback(() => openBox(...boxArgs), [...boxArgs]);
 };
 
 export const useDelayedSpace = (spaceName, ...boxArgs) => {
@@ -39,7 +37,7 @@ export const useDelayedSpace = (spaceName, ...boxArgs) => {
   return [space, box, openSpace];
 };
 
-const openBox = async (address, provider) => {
-  return await Box.openBox(address, provider);
+const openBox = (address, provider) => {
+  return Box.openBox(address, provider);
 };
 
