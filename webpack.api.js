@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/3boxHooks.js',
+  entry: './src/api.js',
   output: {
-    library: '3box-react-hooks',
+    library: '3box-react-hooks-api',
     libraryTarget: 'umd',
-    filename: 'index.js'
+    filename: 'api.js'
   },
   module: {
     rules: [

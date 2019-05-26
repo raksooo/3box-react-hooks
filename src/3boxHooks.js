@@ -6,8 +6,8 @@ export const useProfile = (address) => {
   return useAsync(async () => await Box.getProfile(address), [address]);
 };
 
-export const usePublicSpace = (spaceName, address) => {
-  return useAsync(async () => await Box.getSpace(spaceName, address));
+export const usePublicSpace = (address, spaceName) => {
+  return useAsync(async () => await Box.getSpace(address, spaceName), [address, spaceName]);
 };
 
 export const useBox = (...args) => {

@@ -19,7 +19,7 @@ const TEST_PROFILE = {
 };
 const TEST_SPACE = '3box-react-hooks-test-space';
 
-describe('Ethereum specific hooks', function() {
+describe('3box hooks', function() {
   this.timeout(5000);
 
   const provider = new FakeProvider();
@@ -54,7 +54,7 @@ describe('Ethereum specific hooks', function() {
   });
 
   it('should retrieve a public space', async function() {
-    const space = await testHook(usePublicSpace, TEST_SPACE, TEST_PROFILE.address);
+    const space = await testHook(usePublicSpace, TEST_PROFILE.address, TEST_SPACE);
 
     expect(space).to.not.be.null;
   });

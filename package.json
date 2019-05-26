@@ -7,6 +7,8 @@
     "test": "./node_modules/.bin/mocha --require @babel/register",
     "build:dist": "./node_modules/.bin/webpack --watch --config webpack.config.js --mode=development",
     "build:dist:prod": "./node_modules/.bin/webpack --config webpack.config.js --mode=production",
+    "build:api": "./node_modules/.bin/webpack --config webpack.api.js --mode=development",
+    "build:api:prod": "./node_modules/.bin/webpack --config webpack.api.js --mode=production",
     "build:example": "./node_modules/.bin/webpack --watch --config webpack.example.js --mode=development",
     "example": "node example/server.js"
   },
