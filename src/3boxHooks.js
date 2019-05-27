@@ -11,18 +11,18 @@ export const useBox = (...args) => {
   return box;
 }
 
-export const useSpace = (spaceName, box) => {
-  const [space, open] = useDelayedSpace(spaceName, box);
+export const useSpace = (...args) => {
+  const [space, open] = useDelayedSpace(...args);
   useEffect(() => { open(); }, []);
   return space;
 };
 
-export const useDelayedBox = (...boxArgs) => {
-  return useAsyncOpenable(() => Box.openBox(...boxArgs), [...boxArgs]);
+export const useDelayedBox = (...args) => {
+  return useAsyncOpenable(() => Box.openBox(...args), [...args]);
 };
 
-export const useDelayedSpace = (spaceName, box) => {
-  return useAsyncOpenable(() => box.openSpace(spaceName), [spaceName, box]);
+export const useDelayedSpace = (spaceName, box, ...args) => {
+  return useAsyncOpenable(() => box.openSpace(spaceName, ...args), [spaceName, box]);
 };
 
 
