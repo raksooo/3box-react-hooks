@@ -3,7 +3,7 @@ React hooks wrapping 3box API
 
 ## Installation
 ```sh
-npm i -s 3box-react-hooks
+npm i -S 3box-react-hooks
 ```
 
 ## Api
