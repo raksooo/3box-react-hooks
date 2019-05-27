@@ -9,9 +9,9 @@ const SPACE_NAME = '3box-react-hooks-demo';
 const Example = ({ provider, address }) => {
   const profile1 = useProfile(address);
   const box1 = useBox(address, provider);
-  const [space1] = useSpace(SPACE_NAME, address, provider);
+  const space1 = useSpace(SPACE_NAME, box1);
   const [box2, openBox2] = useDelayedBox(address, provider);
-  const [space2,, openSpace2] = useDelayedSpace(SPACE_NAME, address, provider);
+  const [space2, openSpace2] = useDelayedSpace(SPACE_NAME, box2);
   const space3 = usePublicSpace(address, SPACE_NAME);
   const profile2 = useApiProfile(address);
   const space4 = useApiPublicSpace(address, SPACE_NAME);
