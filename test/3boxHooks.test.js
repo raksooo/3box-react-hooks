@@ -7,7 +7,7 @@ import {
   useSpace,
   usePublicSpace,
 } from '../src/3boxHooks.js';
-import { testHook, testHookN } from './testHelper';
+import { testHook } from './testHelper';
 import 'jsdom-global/register';
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -19,20 +19,28 @@ const TEST_PROFILE = {
 };
 const TEST_SPACE = '3box-react-hooks-test-space';
 
-describe('3box hooks', function() {
+describe('3box static hooks', function() {
+  it('should retrieve a profile', async function() {
+    const profile = await testHook(useProfile, TEST_PROFILE.address);
+
+    expect(profile).to.not.be.null;
+    expect(profile).to.have.property('name', TEST_PROFILE.name);
+  });
+
+  it('should retrieve a public space', async function() {
+    const space = await testHook(usePublicSpace, TEST_PROFILE.address, TEST_SPACE);
+
+    expect(space).to.not.be.null;
+  });
+});
+
+describe('3box ipfs hooks', function() {
   this.timeout(5000);
 
   const provider = new FakeProvider();
 
   beforeEach(function() {
     provider.injectResult('0x0');
-  });
-
-  it('should retrieve a profile', async function() {
-    const profile = await testHook(useProfile, TEST_PROFILE.address);
-
-    expect(profile).to.not.be.null;
-    expect(profile).to.have.property('name', TEST_PROFILE.name);
   });
 
   it('should retrieve a box', async function() {
@@ -45,18 +53,17 @@ describe('3box hooks', function() {
   });
 
   it('should retrieve a space', async function() {
-    const space = await testHookN(useSpace, 0, TEST_SPACE, TEST_PROFILE.address, provider);
+    const _useSpace = () => {
+      const box = useBox(TEST_PROFILE.address, provider);
+      return useSpace(TEST_SPACE, box);
+    }
+
+    const space = await testHook(_useSpace);
 
     expect(space).to.not.be.null;
     expect(space).to.have.property('private');
     expect(space).to.have.property('public');
     expect(space).to.have.property('_name', TEST_SPACE);
-  });
-
-  it('should retrieve a public space', async function() {
-    const space = await testHook(usePublicSpace, TEST_PROFILE.address, TEST_SPACE);
-
-    expect(space).to.not.be.null;
   });
 });
 

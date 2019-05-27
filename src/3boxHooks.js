@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Box from '3box';
 import { useProfile, usePublicSpace } from './api';
-import { useAsyncCallback } from './helperHooks';
+import { useAsyncOpenable } from './helperHooks';
 
 export { useProfile, usePublicSpace };
 
@@ -11,28 +11,18 @@ export const useBox = (...args) => {
   return box;
 }
 
-export const useSpace = (spaceName, ...boxArgs) => {
-  const [space, box, open] = useDelayedSpace(spaceName, ...boxArgs);
+export const useSpace = (spaceName, box) => {
+  const [space, open] = useDelayedSpace(spaceName, box);
   useEffect(() => { open(); }, []);
-  return [space, box];
-}
+  return space;
+};
 
 export const useDelayedBox = (...boxArgs) => {
-  return useAsyncCallback(() => openBox(...boxArgs), [...boxArgs]);
+  return useAsyncOpenable(() => Box.openBox(...boxArgs), [...boxArgs]);
 };
 
-export const useDelayedSpace = (spaceName, ...boxArgs) => {
-  const [result, openSpace] = useAsyncCallback(async () => {
-    const box = await openBox(...boxArgs);
-    const space = await box.openSpace(spaceName);
-    return [space, box];
-  }, [spaceName, ...boxArgs]);
-
-  const [space, box] = result != null ? result : [null, null];
-  return [space, box, openSpace];
+export const useDelayedSpace = (spaceName, box) => {
+  return useAsyncOpenable(() => box.openSpace(spaceName), [spaceName, box]);
 };
 
-const openBox = (address, provider) => {
-  return Box.openBox(address, provider);
-};
 

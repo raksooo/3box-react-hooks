@@ -6,7 +6,13 @@ export const useAsync = (fn, dependencies) => {
   return result;
 };
 
-export const useAsyncCallback = (callback, dependencies) => {
+export const useAsyncOpenable = (callback, dependencies) => {
+  const [result, asyncCallback] = useAsyncCallback(callback, dependencies);
+  const openable = useOpenable(asyncCallback, dependencies);
+  return [result, openable];
+};
+
+const useAsyncCallback = (callback, dependencies) => {
   const mounted = useMounted();
   const [result, setResult] = useState(null);
 
@@ -20,7 +26,7 @@ export const useAsyncCallback = (callback, dependencies) => {
   return [result, _callback];
 };
 
-export const useMounted = () => {
+const useMounted = () => {
   const mounted = useRef(false);
 
   useEffect(() => {
@@ -29,5 +35,17 @@ export const useMounted = () => {
   }, []);
 
   return mounted;
+};
+
+const useOpenable = (callback, dependencies) => {
+  const [opened, setOpened] = useState(false);
+
+  useEffect(() => {
+    if (opened && dependencies.every(dependency => dependency != null)) {
+      callback();
+    }
+  }, dependencies.concat([opened]));
+
+  return useCallback(() => setOpened(true));
 };
 
