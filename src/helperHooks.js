@@ -6,7 +6,7 @@ export const useAsync = (fn, dependencies) => {
     if (dependencies.every(dependency => dependency != null)) {
       callback();
     }
-  }, [dependencies]);
+  }, dependencies);
   return result;
 };
 
