@@ -1,6 +1,9 @@
 # 3box-react-hooks
 React hooks wrapping 3box API
 
+## Changelog
+2.0.0 has a new API that is more in line with the 3box API. The new version also enables more lightweight builds with ```3box-react-hooks/dist/api```.
+
 ## Installation
 ```sh
 npm i -S 3box-react-hooks
