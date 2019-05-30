@@ -2,7 +2,11 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 export const useAsync = (fn, dependencies) => {
   const [result, callback] = useAsyncCallback(fn, dependencies);
-  useEffect(() => { callback(); }, []);
+  useEffect(() => {
+    if (dependencies.every(dependency => dependency != null)) {
+      callback();
+    }
+  }, [dependencies]);
   return result;
 };
 
