@@ -13,10 +13,10 @@ npm i -S 3box-react-hooks
 |usePublicSpace|address, space name[, opts]|space|Box.getSpace|
 |||||
 |useBox|address, provider[, opts]|box|Box.openBox|
-|useSpace|space, box[, opts]|space|box.openSpace|
+|useSpace|space name, box[, opts]|space|box.openSpace|
 |||||
 |useDelayedBox|address, provider[, opts]|[box, open]|-|
-|useDelayedSpace|space, box[, opts]|[space, open]|-|
+|useDelayedSpace|space name, box[, opts]|[space, open]|-|
 
 ### Delayed box and space
 Delayed hooks can be used to postpone authentication. For example if a box should be opened when the user presses an authentication button. The return value from the hooks contains ```box```/```space``` which is null until authenticated and ```open``` which is a function that opens the box/space.
