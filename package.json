@@ -1,7 +1,7 @@
 {
   "name": "3box-react-hooks",
   "version": "2.0.0",
-  "description": "React hooks for 3box integration",
+  "description": "React hooks wrapping the 3box API",
   "main": "dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --require @babel/register",
@@ -16,6 +16,14 @@
     "type": "git",
     "url": "git+https://github.com/raksooo/3box-react-hooks.git"
   },
+  "keywords": [
+    "3box",
+    "react",
+    "hooks",
+    "profile",
+    "box",
+    "space"
+  ],
   "author": "Oskar Nyberg",
   "bugs": {
     "url": "https://github.com/raksooo/3box-react-hooks/issues"
