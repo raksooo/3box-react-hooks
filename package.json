@@ -43,7 +43,7 @@
     "eth-provider": "^0.2.2",
     "express": "^4.17.0",
     "ganache-cli": "^6.4.3",
-    "jsdom": "^14.0.0",
+    "jsdom": "^16.5.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.1.3",
     "nacl-did": "^0.4.0",
